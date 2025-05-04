@@ -20,10 +20,20 @@ void init_poblacion(int taula[N][NUM_GENS]){
 }
 
 
+void evaluaFormula(int poblacio[N][NUM_GENS]){
+
+}
+
+void libMem(){
+
+}
+
 int main(){
     
     int poblacio[N][NUM_GENS];
     init_poblacion(poblacio);
+    evaluaFormula(poblacio);
+    libMem();
 
     return 0;
 }
