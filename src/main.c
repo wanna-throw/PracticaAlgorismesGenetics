@@ -17,16 +17,37 @@ void init_poblacion(int *taula){
 }
 
 
-void evaluaFormula(poblacio){
+void evaluaFormula(int *poblacio){
+
 
 }
 
-void libMem(){
+void libMem(int *vla){
+    free(*vla);
+}
 
+void insercioParam(int nGene, int nCromo, float probMut, int kParam){
+
+    printf("Inserta el nombre de Generacions que vulguis computar: (Default:100)\n");
+    scanf("%d", &nGene);
+    printf("Inserta el nombre de Cromosomes que vulguis computar: (Default:40)\n");
+    scanf("%d", &nCromo);
+    printf("Inserta la probabilitat de mutacio que vulguis computar: (Default:0.05)\n");
+    scanf("%f", &probMut);
+    printf("Inserta el nombre del parametre K que vulguis computar: (Default:5)\n");
+    scanf("%d", &kParam);
 }
 
 int main(){
     
+    //variables
+    int nGeneracions;
+    int nCromosomes;
+    float probMutacio;
+    int kParam;
+
+    insercioParam(nGeneracions, nCromosomes, probMutacio, kParam);
+
     srand(time(NULL));
     int *poblacion = malloc(N * NUM_GENS * sizeof *poblacion);
     init_poblacion(poblacion);
@@ -34,11 +55,12 @@ int main(){
     if (!poblacion) {
         perror("malloc");
         exit(EXIT_FAILURE);
-        }
+    }
+    
+
 
     evaluaFormula(poblacion);
-    libMem();
-
+    libMem(poblacion);
 
     free(poblacion);
     return 0;
