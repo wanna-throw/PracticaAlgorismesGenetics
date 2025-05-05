@@ -1,16 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #define NUM_GENS 30
 #define N 100
 #define K 10
+#define PROBABILITAT 5
 
 void init_poblacion(int *taula){
 
     for (int i = 0; i < N; i++){
         for (int j = 0 ; j < NUM_GENS; j++){
-
+            
+            /*En cada indice se imprime 1 o 0 de forma aleatoria*/
              taula[i * NUM_GENS + j] = rand() % 2;
 
             }
@@ -23,13 +26,17 @@ void mutar(int *cromosoma, int i){
 
     for(int j = 0; j < NUM_GENS; j++){
 
-        mutacio = rand() % 101;
+        mutacio = rand() % 10001;
         printf("%d ", mutacio);
-        if (mutacio >= 1 && mutacio <= 5){
 
-            if (cromosoma[i * NUM_GENS + j] == 0){
+        /*Probabilidad de 0,05 de mutacion*/
+        if (mutacio >= 1 && mutacio <= PROBABILITAT){
+
+            /*Si es el gen es 0 pasa a 1 */
+            if(cromosoma[i * NUM_GENS + j] == 0){
                 cromosoma[i * NUM_GENS + j] = 1;
             }
+            /*Si es el gen es 1 pasa a 0 */
             else {
                 cromosoma[i * NUM_GENS + j] = 0;
             }
@@ -37,20 +44,30 @@ void mutar(int *cromosoma, int i){
     }
 }
 
-void seleccionar_padres(int *taula, int *seleccionats){
+void seleccionar_padres(const int *poblacion, const int *fitness, int *seleccionados) {
+    for (int i = 0; i < N; i++) {
 
-    
+        int mejor = rand() % N;
 
+        for (int t = 1; t < K; t++) {
+            int candidato = rand() % N;
+            if (fitness[candidato] < fitness[mejor]) {
+                mejor = candidato;
+            }
+        }
+
+        memcpy(&seleccionados[i * NUM_GENS],&poblacion[mejor   * NUM_GENS],NUM_GENS * sizeof(int));
+    }
 }
 
-void evaluaFormula(int *poblacio){
+void evaluaFormula(int *poblacion){
     
 }
 
 void libMem(int *vla){
-    free(*vla);
+    free(vla);
 }
-
+/*Necessito que si es default entonces que devuelva cada parametro por ejemplo null y asi saber si utilizar las constantes*/
 void insercioParam(int nGene, int nCromo, float probMut, int kParam){
 
     printf("Inserta el nombre de Generacions que vulguis computar: (Default:100)\n");
@@ -76,21 +93,21 @@ int main(){
     srand(time(NULL));
     int *poblacion = malloc(N * NUM_GENS * sizeof *poblacion);
     int *fitness = malloc(N * NUM_GENS * sizeof *fitness);
+    int *seleccionados = malloc(N * NUM_GENS * sizeof *seleccionados);
     init_poblacion(poblacion);
 
-    if (!poblacion) {
+    if (!poblacion || !fitness || !seleccionados) {
         perror("malloc");
         exit(EXIT_FAILURE);
-        }
+    }
 
     mutar(poblacion, 0);
-    seleccionar_padres(*poblacion, *fitness);
-    libMEM();
+    seleccionar_padres(poblacion, fitness, seleccionados);
     evaluaFormula(poblacion);
 
-
+    /*Te falta poner en el void libMEM la liberacion de memoria de fitness y seleccionados*/
     libMem(poblacion);
-
-    free(poblacion);
+    free(fitness);
+    free(seleccionados);
     return 0;
 }
