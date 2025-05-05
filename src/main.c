@@ -16,13 +16,32 @@ void init_poblacion(int *taula){
         }
 }
 
+void mutar(int *cromosoma, int i){
 
-void evaluaFormula(poblacio){
+    int mutacio;
 
+    for(int j = 0; j < NUM_GENS; j++){
+
+        mutacio = rand() % 101;
+        printf("%d ", mutacio);
+        if (mutacio >= 1 && mutacio <= 5){
+
+            if (cromosoma[i * NUM_GENS + j] == 0){
+                cromosoma[i * NUM_GENS + j] = 1;
+            }
+            else {
+                cromosoma[i * NUM_GENS + j] = 0;
+            }
+        }
+    }
+}
+
+void evaluaFormula(int *poblacio){
+    
 }
 
 void libMem(){
-
+        
 }
 
 int main(){
@@ -36,12 +55,10 @@ int main(){
         exit(EXIT_FAILURE);
         }
 
-    evaluaFormula(poblacion);
-    libMem();
+    mutar(poblacion, 0);
+
 
 
     free(poblacion);
     return 0;
 }
-
-
