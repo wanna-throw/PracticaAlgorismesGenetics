@@ -4,6 +4,7 @@
 
 #define NUM_GENS 30
 #define N 100
+#define K 10
 
 void init_poblacion(int *taula){
 
@@ -36,6 +37,12 @@ void mutar(int *cromosoma, int i){
     }
 }
 
+void seleccionar_padres(int *taula, int *seleccionats){
+
+    
+
+}
+
 void evaluaFormula(int *poblacio){
     
 }
@@ -48,6 +55,7 @@ int main(){
     
     srand(time(NULL));
     int *poblacion = malloc(N * NUM_GENS * sizeof *poblacion);
+    int *fitness = malloc(N * NUM_GENS * sizeof *fitness);
     init_poblacion(poblacion);
 
     if (!poblacion) {
@@ -56,6 +64,9 @@ int main(){
         }
 
     mutar(poblacion, 0);
+    seleccionar_padres(*poblacion, *fitness);
+    libMEM();
+    evaluaFormula(poblacion);
 
 
 
