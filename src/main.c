@@ -9,9 +9,9 @@
 #define K 10
 #define PROBABILITAT 5
 
-void init_poblacion(int *taula){
+void init_poblacion(int *taula, int num_generaciones){
 
-    for (int i = 0; i < N; i++){
+    for (int i = 0; i < num_generaciones; i++){
         for (int j = 0 ; j < NUM_GENS; j++){
             
             /*En cada indice se imprime 1 o 0 de forma aleatoria*/
@@ -62,37 +62,35 @@ void insercioParam(int nGene, int nCromo, float probMut, int kParam){
 }
 
 
-void mutar(int *cromosoma, int i){
+int mutar(int gen, float probabilidad){
 
     int mutacio;
 
-    for(int j = 0; j < NUM_GENS; j++){
-
-        mutacio = rand() % 10001;
-        printf("%d ", mutacio);
+        mutacio = rand() % 101;
 
         /*Probabilidad de 0,05 de mutacion*/
-        if (mutacio >= 1 && mutacio <= PROBABILITAT){
+        if (mutacio >= 1 && mutacio <= (int)(probabilidad*100)){
 
             /*Si el gen es 0 pasa a 1 */
-            if(cromosoma[i * NUM_GENS + j] == 0){
-                cromosoma[i * NUM_GENS + j] = 1;
+            if(gen == 0){
+                gen = 1;
             }
             /*Si el gen es 1 pasa a 0 */
             else {
-                cromosoma[i * NUM_GENS + j] = 0;
+                gen = 0;
             }
         }
-    }
+
+        return gen;
 }
 
-void seleccionar_padres(const int *poblacion, const int *fitness, int *seleccionados) {
-    for (int i = 0; i < N; i++) {
+void seleccionar_padres(const int *poblacion, const int *fitness, int *seleccionados, int num_generaciones, int param_k) {
+    for (int i = 0; i < num_generaciones; i++) {
 
-        int mejor = rand() % N;
+        int mejor = rand() % num_generaciones;
 
-        for (int t = 1; t < K; t++) {
-            int candidato = rand() % N;
+        for (int t = 1; t < param_k; t++) {
+            int candidato = rand() % num_generaciones;
             if (fitness[candidato] < fitness[mejor]) {
                 mejor = candidato;
             }
@@ -139,22 +137,20 @@ int main(){
     insercioParam(nGeneracions, nCromosomes, probMutacio, kParam);
 
     srand(time(NULL));
-    //Bueno al fin y al cabo es lo mismo, pero si quieres te lo pongo como sizeof(int), eso si la N es necesaria aunque debo cambiarla por nGeneraciones
-    int *poblacion = malloc(N * NUM_GENS * sizeof(int));
-    int *fitness = malloc(N * NUM_GENS * sizeof(int));
-    int *seleccionados = malloc(N * NUM_GENS * sizeof(int));
-    init_poblacion(poblacion);
+    //Bueno al fin y al cabo es lo mismo, pero si quieres te lo pongo como sizeof(int), eso si la N es necesaria aunque debo cambiarla por nCromosomes
+    int *poblacion = malloc(nCromosomes * NUM_GENS * sizeof(int));
+    int *fitness = malloc(nCromosomes * NUM_GENS * sizeof(int));
+    int *seleccionados = malloc(nCromosomes * NUM_GENS * sizeof(int));
+    init_poblacion(poblacion, nCromosomes);
+    seleccionar_padres(poblacion, fitness, seleccionados, nCromosomes, kParam);
+    poblacion[0] = mutar(poblacion[0], probMutacio);
 
     if (!poblacion || !fitness || !seleccionados) {
         perror("malloc");
         exit(EXIT_FAILURE);
     }
 
-    mutar(poblacion, 0);
-    seleccionar_padres(poblacion, fitness, seleccionados);
     evaluaFormula(poblacion);
-
-
     imprimirContra();
     libMem(poblacion, fitness, seleccionados);
     return 0;
