@@ -69,17 +69,28 @@ void libMem(int *vla, int *fitness, int *seleccionados){
     free(fitness);
     free(seleccionados);
 }
-/*Necessito que si es default entonces que devuelva cada parametro por ejemplo null y asi saber si utilizar las constantes*/
 void insercioParam(int nGene, int nCromo, float probMut, int kParam){
 
-    printf("Inserta el nombre de Generacions que vulguis computar: (Default:100)\n");
+    printf("Inserta el nombre de Generacions que vulguis computar: (0|Default:100)\n");
     scanf("%d", &nGene);
-    printf("Inserta el nombre de Cromosomes que vulguis computar: (Default:40)\n");
+    if(nGene == 0){
+        nGene = NUM_GENS;
+    }
+    printf("Inserta el nombre de Cromosomes que vulguis computar: (0|Default:40)\n");
     scanf("%d", &nCromo);
-    printf("Inserta la probabilitat de mutacio que vulguis computar: (Default:0.05)\n");
+    if(nCromo == 0){
+        nCromo = N;
+    }
+    printf("Inserta la probabilitat de mutacio que vulguis computar: (0|Default:0.05)\n");
     scanf("%f", &probMut);
-    printf("Inserta el nombre del parametre K que vulguis computar: (Default:5)\n");
+    if(probMut == 0){
+        probMut = PROBABILITAT;
+    }
+    printf("Inserta el nombre del parametre K que vulguis computar: (0|Default:5)\n");
     scanf("%d", &kParam);
+    if(kParam == 0){
+        kParam = K;
+    }
 }
 
 int main(){
