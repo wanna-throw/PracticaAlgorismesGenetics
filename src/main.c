@@ -64,8 +64,10 @@ void evaluaFormula(int *poblacion){
     
 }
 
-void libMem(int *vla){
+void libMem(int *vla, int *fitness, int *seleccionados){
     free(vla);
+    free(fitness);
+    free(seleccionados);
 }
 /*Necessito que si es default entonces que devuelva cada parametro por ejemplo null y asi saber si utilizar las constantes*/
 void insercioParam(int nGene, int nCromo, float probMut, int kParam){
@@ -105,9 +107,6 @@ int main(){
     seleccionar_padres(poblacion, fitness, seleccionados);
     evaluaFormula(poblacion);
 
-    /*Te falta poner en el void libMEM la liberacion de memoria de fitness y seleccionados*/
-    libMem(poblacion);
-    free(fitness);
-    free(seleccionados);
+    libMem(poblacion, fitness, seleccionados);
     return 0;
 }
