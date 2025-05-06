@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
 
 #define NUM_GENS 30
 #define N 100
@@ -64,33 +65,56 @@ void evaluaFormula(int *poblacion){
     
 }
 
-void libMem(int *vla, int *fitness, int *seleccionados){
-    free(vla);
+void libMem(int *poblacio, int *fitness, int *seleccionados){
+    
+    for(int i = 0; i < sizeof(poblacio); i++){
+        free(poblacio[i]);
+    }
+    free(poblacio);
+    for(int i = 0; i < sizeof(fitness); i++){
+        free(fitness[i]);
+    }
     free(fitness);
+    for(int i = 0; i < sizeof(seleccionados); i++){
+        free(seleccionados[i]);
+    }
     free(seleccionados);
 }
-void insercioParam(int nGene, int nCromo, float probMut, int kParam){
 
-    printf("Inserta el nombre de Generacions que vulguis computar: (0|Default:100)\n");
-    scanf("%d", &nGene);
-    if(nGene == 0){
+void insercioParam(int nGene, int nCromo, float probMut, int kParam){
+    bool llegit;
+
+    printf("\nInserta el nombre de Generacions que vulguis computar: (Default:100)\n");
+    llegit = scanf("%d", &nGene);
+    if(llegit == false){
         nGene = NUM_GENS;
     }
-    printf("Inserta el nombre de Cromosomes que vulguis computar: (0|Default:40)\n");
-    scanf("%d", &nCromo);
-    if(nCromo == 0){
+    printf("\nEl nombre de Generacions es: %d", nGene);
+
+    printf("\nInserta el nombre de Cromosomes que vulguis computar: (0|Default:40)\n");
+    llegit = scanf("%d", &nCromo);
+    if(llegit == false){
         nCromo = N;
     }
-    printf("Inserta la probabilitat de mutacio que vulguis computar: (0|Default:0.05)\n");
+    printf("\nEl nombre de Cromosomes es: %d", nCromo);
+
+    printf("\nInserta la probabilitat de mutacio que vulguis computar: (0|Default:0.05)\n");
     scanf("%f", &probMut);
     if(probMut == 0){
         probMut = PROBABILITAT;
     }
-    printf("Inserta el nombre del parametre K que vulguis computar: (0|Default:5)\n");
+    printf("\nEl nombre de probabilitat de mutacio es: %d", probMut);
+
+    printf("\nInserta el nombre del parametre K que vulguis computar: (0|Default:5)\n");
     scanf("%d", &kParam);
     if(kParam == 0){
         kParam = K;
     }
+    printf("\nEl nombre de K es: %d", kParam);
+}
+
+void imprimirContra(){
+
 }
 
 int main(){
@@ -104,6 +128,7 @@ int main(){
     insercioParam(nGeneracions, nCromosomes, probMutacio, kParam);
 
     srand(time(NULL));
+    //creo que esta mal declarado el malloc asi, lo correcto seria "= malloc(NUM_GENS *sizeof(int))"
     int *poblacion = malloc(N * NUM_GENS * sizeof *poblacion);
     int *fitness = malloc(N * NUM_GENS * sizeof *fitness);
     int *seleccionados = malloc(N * NUM_GENS * sizeof *seleccionados);
@@ -118,6 +143,8 @@ int main(){
     seleccionar_padres(poblacion, fitness, seleccionados);
     evaluaFormula(poblacion);
 
+
+    imprimirContra();
     libMem(poblacion, fitness, seleccionados);
     return 0;
 }
