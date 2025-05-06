@@ -21,6 +21,47 @@ void init_poblacion(int *taula){
         }
 }
 
+//getters
+
+int getIntParam(int param){
+    bool llegit;
+    llegit = scanf("%d", &param);
+    if(llegit == false){
+        param = NUM_GENS;
+    }
+    return param;
+}
+
+float getFloatParam(float param){
+    bool llegit;
+    llegit = scanf("%f", &param);
+    if(llegit == false){
+        param = NUM_GENS;
+    }
+    return param;
+}
+
+
+void insercioParam(int nGene, int nCromo, float probMut, int kParam){
+    
+    printf("\nInserta el nombre de Generacions que vulguis computar: (Default:100)\n");
+    nGene = getIntParam(nGene);
+    printf("\nEl nombre de Generacions es: %d", nGene);
+
+    printf("\nInserta el nombre de Cromosomes que vulguis computar: (Default:40)\n");
+    nCromo = getIntParam(nCromo);
+    printf("\nEl nombre de Cromosomes es: %d", nCromo);
+
+    printf("\nInserta la probabilitat de mutacio que vulguis computar: (Default:0.05)\n");
+    probMut = getFloatParam(probMut);
+    printf("\nEl nombre de probabilitat de mutacio es: %f", probMut);
+
+    printf("\nInserta el nombre del parametre K que vulguis computar: (Default:5)\n");
+    kParam = getIntParam(kParam);
+    printf("\nEl nombre de K es: %d", kParam);
+}
+
+
 void mutar(int *cromosoma, int i){
 
     int mutacio;
@@ -81,37 +122,7 @@ void libMem(int *poblacio, int *fitness, int *seleccionados){
     free(seleccionados);
 }
 
-void insercioParam(int nGene, int nCromo, float probMut, int kParam){
-    bool llegit;
 
-    printf("\nInserta el nombre de Generacions que vulguis computar: (Default:100)\n");
-    llegit = scanf("%d", &nGene);
-    if(llegit == false){
-        nGene = NUM_GENS;
-    }
-    printf("\nEl nombre de Generacions es: %d", nGene);
-
-    printf("\nInserta el nombre de Cromosomes que vulguis computar: (0|Default:40)\n");
-    llegit = scanf("%d", &nCromo);
-    if(llegit == false){
-        nCromo = N;
-    }
-    printf("\nEl nombre de Cromosomes es: %d", nCromo);
-
-    printf("\nInserta la probabilitat de mutacio que vulguis computar: (0|Default:0.05)\n");
-    scanf("%f", &probMut);
-    if(probMut == 0){
-        probMut = PROBABILITAT;
-    }
-    printf("\nEl nombre de probabilitat de mutacio es: %d", probMut);
-
-    printf("\nInserta el nombre del parametre K que vulguis computar: (0|Default:5)\n");
-    scanf("%d", &kParam);
-    if(kParam == 0){
-        kParam = K;
-    }
-    printf("\nEl nombre de K es: %d", kParam);
-}
 
 void imprimirContra(){
 
