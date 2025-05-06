@@ -33,11 +33,11 @@ void mutar(int *cromosoma, int i){
         /*Probabilidad de 0,05 de mutacion*/
         if (mutacio >= 1 && mutacio <= PROBABILITAT){
 
-            /*Si es el gen es 0 pasa a 1 */
+            /*Si el gen es 0 pasa a 1 */
             if(cromosoma[i * NUM_GENS + j] == 0){
                 cromosoma[i * NUM_GENS + j] = 1;
             }
-            /*Si es el gen es 1 pasa a 0 */
+            /*Si el gen es 1 pasa a 0 */
             else {
                 cromosoma[i * NUM_GENS + j] = 0;
             }
@@ -128,10 +128,10 @@ int main(){
     insercioParam(nGeneracions, nCromosomes, probMutacio, kParam);
 
     srand(time(NULL));
-    //creo que esta mal declarado el malloc asi, lo correcto seria "= malloc(NUM_GENS *sizeof(int))"
-    int *poblacion = malloc(N * NUM_GENS * sizeof *poblacion);
-    int *fitness = malloc(N * NUM_GENS * sizeof *fitness);
-    int *seleccionados = malloc(N * NUM_GENS * sizeof *seleccionados);
+    //Bueno al fin y al cabo es lo mismo, pero si quieres te lo pongo como sizeof(int), eso si la N es necesaria aunque debo cambiarla por nGeneraciones
+    int *poblacion = malloc(N * NUM_GENS * sizeof(int));
+    int *fitness = malloc(N * NUM_GENS * sizeof(int));
+    int *seleccionados = malloc(N * NUM_GENS * sizeof(int));
     init_poblacion(poblacion);
 
     if (!poblacion || !fitness || !seleccionados) {
