@@ -3,15 +3,16 @@
 #include <string.h>
 #include <time.h>
 #include <stdbool.h>
+#include <limits.h>
 
 #define NUM_GENS 30
 #define CROMOSOMES 100
 #define K 10
 #define PROBABILITAT 0.05
 
-void init_poblacion(int *taula, int num_generaciones){
+void init_poblacion(int *taula, int num_cromosomes){
 
-    for (int i = 0; i < num_generaciones; i++){
+    for (int i = 0; i < num_cromosomes; i++){
         for (int j = 0 ; j < NUM_GENS; j++){
             
             /*En cada indice se imprime 1 o 0 de forma aleatoria*/
@@ -164,8 +165,71 @@ void seleccionar_padres(const int *poblacion, const int *fitness, int *seleccion
     }
 }
 
-void evaluaFormula(int *poblacion){
+void evaluaFormula(int *poblacion, int *fitness, int num_cromosomes){
     
+}
+
+void cruza_one_point(){
+
+
+}
+
+void ejecutar_GA(int *poblacion, int *fitness, int *seleccionados, int *poblacion_nueva, int n_generaciones, int n_cromosomas, float prob_mut,int kParam)
+{
+    int  mejor_error_global = INT_MAX;
+    int  gen_mejor_global   = -1;
+    int *mejor_cromosoma    = malloc(NUM_GENS * sizeof *mejor_cromosoma);
+    if (!mejor_cromosoma) {
+        perror("malloc mejor_cromosoma");
+        exit(EXIT_FAILURE);
+    }
+
+    for (int gen = 0; gen < n_generaciones; gen++) {
+        /*Evaluar fitness */
+    evaluaFormula(poblacion, fitness, n_cromosomas);
+
+        /*Hallar el mejor de la generación actual */
+        int mejor_error = INT_MAX;
+        int mejor_index   = 0;
+        for (int i = 0; i < n_cromosomas; i++) {
+            if (fitness[i] < mejor_error) {
+                mejor_error = fitness[i];
+                mejor_index = i;
+            }
+        }
+
+        /*Actualizar global si corresponde */
+        if (mejor_error < mejor_error_global) {
+            mejor_error_global = mejor_error;
+            gen_mejor_global = gen;
+            memcpy(mejor_cromosoma, &poblacion[mejor_index * NUM_GENS], NUM_GENS * sizeof *mejor_cromosoma);
+        }
+
+        /*Selección por torneo */
+        seleccionar_padres(poblacion, fitness, seleccionados, n_cromosomas, kParam);
+
+        /*Cruce (implementado por Dario) */
+        cruza_one_point(seleccionados, poblacion_nueva, n_cromosomas);
+
+        /*Mutación gen a gen usando tu función mutar */
+        for (int i = 0; i < n_cromosomas; i++) {
+            for (int j = 0; j < NUM_GENS; j++) {
+                poblacion_nueva[i*NUM_GENS + j] =
+                    mutar(poblacion_nueva[i*NUM_GENS + j], prob_mut);
+            }
+        }
+
+        /*Reemplazo: swap de punteros */
+        int *tmp = poblacion;
+        poblacion = poblacion_nueva;
+        poblacion_nueva = tmp;
+    }
+
+    /* 8) Imprimir mejor solución global */
+    printf("\n=== Mejor solución encontrada en generación %d ===\n", gen_mejor_global + 1);
+    printf("\n\n");
+
+    free(mejor_cromosoma);
 }
 
 void libMemTaula(int *taula){
@@ -173,6 +237,8 @@ void libMemTaula(int *taula){
         free(taula[i]);
     }
 }
+
+
 
 void libMem(int *poblacio, int *fitness, int *seleccionados){
     //libera memoria de la taula y el punter poblacio
@@ -205,20 +271,20 @@ int main(){
     int *poblacion = malloc(nCromosomes * NUM_GENS * sizeof(int));
     int *fitness = malloc(nCromosomes * NUM_GENS * sizeof(int));
     int *seleccionados = malloc(nCromosomes * NUM_GENS * sizeof(int));
-    
-    srand(time(NULL));
-    init_poblacion(poblacion, nCromosomes);
+    int *poblacion_nueva= malloc(nCromosomes * NUM_GENS * sizeof *poblacion_nueva);
 
-    seleccionar_padres(poblacion, fitness, seleccionados, nCromosomes, kParam);
-    poblacion[0] = mutar(poblacion[0], probMutacio);
-
-    if (!poblacion || !fitness || !seleccionados) {
+    if (!poblacion || !fitness || !seleccionados || !poblacion_nueva) {
         perror("malloc");
         exit(EXIT_FAILURE);
     }
+    srand(time(NULL));
+    init_poblacion(poblacion, nCromosomes);
+    ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParam);
 
-    evaluaFormula(poblacion);
+    evaluaFormula(poblacion, fitness, nCromosomes); /*Mira en el void GA lo que necessito para hacer esta funcion, lo mismo para la funcion cruza_one_point()*/
     imprimirContra(seleccionados);
-    libMem(poblacion, fitness, seleccionados);
+    libMem(poblacion, fitness, seleccionados); /*Necessito que liberes en memoria este nuevo con libMem*/
+
+    free(poblacion_nueva);
     return 0;
 }
