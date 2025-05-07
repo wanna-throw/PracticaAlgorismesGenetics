@@ -7,7 +7,7 @@
 #define NUM_GENS 30
 #define N 100
 #define K 10
-#define PROBABILITAT 5
+#define PROBABILITAT 0.05
 
 void init_poblacion(int *taula, int num_generaciones){
 
@@ -41,23 +41,47 @@ float getFloatParam(float param){
     return param;
 }
 
+bool esCorrecteInt(int param){
+    bool correcte;
+    if(param < 0 || param > 9999){
+        correcte = false;
+    }
+    printf("El parametre ha de ser mes gran que 0 o mes petit que 9999");
+    return false;
+}
+
+bool esCorrecteFloat(float param){
+    bool correcte;
+    if(param < 0 || param > 1){
+        correcte = false;
+    }
+    printf("El parametre ha de ser mes gran que 0 o mes petit que 1");
+    return false;
+}
 
 void insercioParam(int nGene, int nCromo, float probMut, int kParam){
-    
+    do{
     printf("\nInserta el nombre de Generacions que vulguis computar: (Default:100)\n");
     nGene = getIntParam(nGene);
+    }while(esCorrecteInt(nGene) == false);
     printf("\nEl nombre de Generacions es: %d", nGene);
 
+    do{
     printf("\nInserta el nombre de Cromosomes que vulguis computar: (Default:40)\n");
     nCromo = getIntParam(nCromo);
+    }while(esCorrecteInt(nCromo) == false);
     printf("\nEl nombre de Cromosomes es: %d", nCromo);
 
+    do{
     printf("\nInserta la probabilitat de mutacio que vulguis computar: (Default:0.05)\n");
     probMut = getFloatParam(probMut);
+    }while(esCorrecteFloat(probMut) == false);
     printf("\nEl nombre de probabilitat de mutacio es: %f", probMut);
 
+    do{
     printf("\nInserta el nombre del parametre K que vulguis computar: (Default:5)\n");
     kParam = getIntParam(kParam);
+    }while(esCorrecteInt(kParam) == false);
     printf("\nEl nombre de K es: %d", kParam);
 }
 
@@ -104,26 +128,29 @@ void evaluaFormula(int *poblacion){
     
 }
 
+void libMemTaula(int *taula){
+    for (int i = 0; i < sizeof(taula); i++){
+        free(taula[i]);
+    }
+}
+
 void libMem(int *poblacio, int *fitness, int *seleccionados){
-    
-    for(int i = 0; i < sizeof(poblacio); i++){
-        free(poblacio[i]);
-    }
+    //libera memoria de la taula y el punter poblacio
+    libMemTaula(poblacio);
     free(poblacio);
-    for(int i = 0; i < sizeof(fitness); i++){
-        free(fitness[i]);
-    }
+    //libera memoria de la taula y el punter fitness
+    libMemTaula(fitness);
     free(fitness);
-    for(int i = 0; i < sizeof(seleccionados); i++){
-        free(seleccionados[i]);
-    }
+    //libera memoria de la taula y el punter seleccionados
+    libMemTaula(seleccionados);
     free(seleccionados);
 }
 
-
-
-void imprimirContra(){
-
+void imprimirContra(int *taula){
+    printf("La contrasenya es: ");
+    for(int i = 0; i < sizeof(taula); i++){
+        printf("%d", taula[i]);
+    }
 }
 
 int main(){
@@ -133,15 +160,15 @@ int main(){
     int nCromosomes;
     float probMutacio;
     int kParam;
-
+    //taules malloc
     insercioParam(nGeneracions, nCromosomes, probMutacio, kParam);
-
-    srand(time(NULL));
-    //Bueno al fin y al cabo es lo mismo, pero si quieres te lo pongo como sizeof(int), eso si la N es necesaria aunque debo cambiarla por nCromosomes
     int *poblacion = malloc(nCromosomes * NUM_GENS * sizeof(int));
     int *fitness = malloc(nCromosomes * NUM_GENS * sizeof(int));
     int *seleccionados = malloc(nCromosomes * NUM_GENS * sizeof(int));
+    
+    srand(time(NULL));
     init_poblacion(poblacion, nCromosomes);
+
     seleccionar_padres(poblacion, fitness, seleccionados, nCromosomes, kParam);
     poblacion[0] = mutar(poblacion[0], probMutacio);
 
@@ -151,7 +178,7 @@ int main(){
     }
 
     evaluaFormula(poblacion);
-    imprimirContra();
+    imprimirContra(seleccionados);
     libMem(poblacion, fitness, seleccionados);
     return 0;
 }
