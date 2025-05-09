@@ -164,8 +164,16 @@ void seleccionar_padres(const int *poblacion, const int *fitness, int *seleccion
     }
 }
 
-void evaluaFormula(int *poblacion){
-    
+bool evaluaFormula(int *poblacion){
+    bool correcte = true;
+    int formula;
+    for(int i = 0; i < sizeof(poblacion); i++){
+        formula = (poblacion[i]*(i^2) - 1977);
+        if (formula != 0){
+            correcte = false;
+        }
+    }
+    return correcte;
 }
 
 void libMemTaula(int *taula){
