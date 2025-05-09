@@ -248,7 +248,7 @@ void libMemTaula(int *taula){
 
 
 
-void libMem(int *poblacio, int *fitness, int *seleccionados){
+void libMem(int *poblacio, int *fitness, int *seleccionados, int *poblacion_nueva){
     //libera memoria de la taula y el punter poblacio
     libMemTaula(poblacio);
     free(poblacio);
@@ -258,6 +258,9 @@ void libMem(int *poblacio, int *fitness, int *seleccionados){
     //libera memoria de la taula y el punter seleccionados
     libMemTaula(seleccionados);
     free(seleccionados);
+    //libera memoria de la taula y el punter poblacion_nueva
+    libMemTaula(poblacion_nueva);
+    free(poblacion_nueva);
 }
 
 void imprimirContra(int *taula){
@@ -291,7 +294,7 @@ int main(){
 
     evaluaFormula(poblacion, fitness, nCromosomes); /*Mira en el void GA lo que necessito para hacer esta funcion, lo mismo para la funcion cruza_one_point()*/
     imprimirContra(seleccionados);
-    libMem(poblacion, fitness, seleccionados); /*Necessito que liberes en memoria este nuevo con libMem*/
+    libMem(poblacion, fitness, seleccionados, poblacion_nueva);
 
     free(poblacion_nueva);
     return 0;
