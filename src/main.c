@@ -177,9 +177,17 @@ bool evaluaFormula(int *poblacion, int *fitness, int num_cromosomes){
     return correcte;
 }
 
-void cruza_one_point(){
-
-
+void cruza_one_point(int **taula[][NUM_GENS]){
+    int crossoverPoint;
+    int aux;
+    for (int i = 0; i < sizeof(taula) - 1; i = i + 2){
+        crossoverPoint = rand() % sizeof(taula);
+        for (int j = 0; j < crossoverPoint; j++){
+            aux = taula[i][j];
+            taula[i][j] = taula[i + 1][j];
+            taula[i + 1][j] = aux;
+        }
+    }
 }
 
 void ejecutar_GA(int *poblacion, int *fitness, int *seleccionados, int *poblacion_nueva, int n_generaciones, int n_cromosomas, float prob_mut,int kParam)
