@@ -101,7 +101,7 @@ bool esCorrecteFloat(float param){
 void insercioParam(int *nGene, int *nCromo, float *probMut, int *kParam){
     do{
     printf("\nInserta el nombre de Generacions que vulguis computar: (Default:100)\n");
-    *nGene = getNumGens(*nGene);
+    *nGene = getNumGenera(*nGene);
     }while(esCorrecteInt(*nGene) == false);
     printf("\nEl nombre de Generacions es: %d", *nGene);
 
@@ -160,15 +160,10 @@ void seleccionar_padres(int **poblacion, const int *fitness, int **seleccionados
     }
 }
 
- /*Se debe corregir a vector 2D*/
-bool evaluaFormula(int *poblacion, int *fitness, int num_cromosomes){
+void evaluaFormula(int **poblacion, int *fitness, int num_cromosomes){
     bool correcte = true;
-    int formula;
     for(int i = 0; i < sizeof(poblacion); i++){
-        formula = (poblacion[i]*(i^2) - 1977);
-        if (formula != 0){
-            correcte = false;
-        }
+        fitness[i] = (poblacion[i][0])*(i^2) - 1977;
     }
     return correcte;
 }
@@ -257,23 +252,29 @@ void ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
 }
 
 
-void libMemTaula(int **taula){
+void libMemTaula2D(int **taula){
     for (int i = 0; i < NUM_GENS; i++){
         free(taula[i]);
     }
     free(taula);
 }
 
+void libMemTaula1D(int *taula){
+    for (int i = 0; i < NUM_GENS; i++){
+        free(taula[i]);
+    }
+    free(taula);
+}
 
 void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_nueva){
     //libera memoria de la taula y el punter poblacio
-    libMemTaula(poblacio);
+    libMemTaula2D(poblacio);
     //libera memoria de la taula y el punter fitness
-    libMemTaula(fitness);
+    libMemTaula1D(fitness);
     //libera memoria de la taula y el punter seleccionados
-    libMemTaula(seleccionados);
+    libMemTaula2D(seleccionados);
     //libera memoria de la taula y el punter poblacion_nueva
-    libMemTaula(poblacion_nueva);
+    libMemTaula2D(poblacion_nueva);
 }
 
 void imprimirContra(int *taula){
