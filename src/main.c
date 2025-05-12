@@ -159,13 +159,12 @@ void seleccionar_padres(int **poblacion, const int *fitness, int **seleccionados
         memcpy(seleccionados[i], poblacion[mejor], NUM_GENS * sizeof(int));
     }
 }
-
+//a revisar
 void evaluaFormula(int **poblacion, int *fitness, int num_cromosomes){
     bool correcte = true;
     for(int i = 0; i < sizeof(poblacion); i++){
         fitness[i] = (poblacion[i][0])*(i^2) - 1977;
     }
-    return correcte;
 }
 
 void onePointCrossover(int **taula, int n_cromosomes){
@@ -235,6 +234,7 @@ void ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
             }
         }
 
+        //a revisar
         faseSupervivencia(poblacion_nueva, poblacion, n_cromosomas);
 
         /*Reemplazo: swap de punteros */
@@ -258,7 +258,7 @@ void libMemTaula2D(int **taula){
     }
     free(taula);
 }
-
+//a revisar
 void libMemTaula1D(int *taula){
     for (int i = 0; i < NUM_GENS; i++){
         free(taula[i]);
@@ -276,10 +276,10 @@ void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_n
     //libera memoria de la taula y el punter poblacion_nueva
     libMemTaula2D(poblacion_nueva);
 }
-
+//a revisar
 void imprimirContra(int *taula){
     printf("La contrasenya es: ");
-    for(int i = 0; i < sizeof(taula); i++){
+    for(int i = 0; i <= NUM_GENS; i++){
         printf("%d", taula[i]);
     }
 }
@@ -319,7 +319,7 @@ int main(){
     ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParam);
 
     evaluaFormula(poblacion, fitness, nCromosomes); 
-    imprimirContra(seleccionados);
+    imprimirContra(seleccionados);//funcion a revisar
     libMem(poblacion, fitness, seleccionados, poblacion_nueva);
 
     return 0;
