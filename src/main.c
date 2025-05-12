@@ -10,16 +10,13 @@
 #define K 10
 #define PROBABILITAT 0.05
 
-void init_poblacion(int *taula, int num_cromosomes){
-
-    for (int i = 0; i < num_cromosomes; i++){
-        for (int j = 0 ; j < NUM_GENS; j++){
-            
-            /*En cada indice se imprime 1 o 0 de forma aleatoria*/
-             taula[i * NUM_GENS + j] = rand() % 2;
-
-            }
+void init_poblacion(int **taula, int num_cromosomes) {
+    for (int i = 0; i < num_cromosomes; i++) {
+        for (int j = 0; j < NUM_GENS; j++) {
+            /* En cada índice se imprime 1 o 0 de forma aleatoria */
+            taula[i][j] = rand() % 2;
         }
+    }
 }
 
 //getters
@@ -100,30 +97,30 @@ bool esCorrecteFloat(float param){
  *        per l'usuari. En cas d'una insercio invalida li torna a demanar el valor i en cas de 
  *        presionar "enter" s'aplica el valor que hi ha per default.
  */
-void insercioParam(int nGene, int nCromo, float probMut, int kParam){
+void insercioParam(int *nGene, int *nCromo, float *probMut, int *kParam){
     do{
     printf("\nInserta el nombre de Generacions que vulguis computar: (Default:100)\n");
-    nGene = getNumGens(nGene);
-    }while(esCorrecteInt(nGene) == false);
-    printf("\nEl nombre de Generacions es: %d", nGene);
+    *nGene = getNumGens(*nGene);
+    }while(esCorrecteInt(*nGene) == false);
+    printf("\nEl nombre de Generacions es: %d", *nGene);
 
     do{
     printf("\nInserta el nombre de Cromosomes que vulguis computar: (Default:40)\n");
-    nCromo = getNumCromo(nCromo);
-    }while(esCorrecteInt(nCromo) == false);
-    printf("\nEl nombre de Cromosomes es: %d", nCromo);
+    *nCromo = getNumCromo(*nCromo);
+    }while(esCorrecteInt(*nCromo) == false);
+    printf("\nEl nombre de Cromosomes es: %d", *nCromo);
 
     do{
     printf("\nInserta la probabilitat de mutacio que vulguis computar: (Default:0.05)\n");
-    probMut = getNumProb(probMut);
-    }while(esCorrecteFloat(probMut) == false);
-    printf("\nEl nombre de probabilitat de mutacio es: %f", probMut);
+    *probMut = getNumProb(*probMut);
+    }while(esCorrecteFloat(*probMut) == false);
+    printf("\nEl nombre de probabilitat de mutacio es: %f", *probMut);
 
     do{
     printf("\nInserta el nombre del parametre K que vulguis computar: (Default:5)\n");
-    kParam = getNumK(kParam);
-    }while(esCorrecteInt(kParam) == false);
-    printf("\nEl nombre de K es: %d", kParam);
+    *kParam = getNumK(*kParam);
+    }while(esCorrecteInt(*kParam) == false);
+    printf("\nEl nombre de K es: %d", *kParam);
 }
 
 
@@ -149,22 +146,19 @@ int mutar(int gen, float probabilidad){
         return gen;
 }
 
-void seleccionar_padres(const int *poblacion, const int *fitness, int *seleccionados, int num_generaciones, int param_k) {
-    for (int i = 0; i < num_generaciones; i++) {
-
-        int mejor = rand() % num_generaciones;
-
-        for (int t = 1; t < param_k; t++) {
-            int candidato = rand() % num_generaciones;
-            if (fitness[candidato] < fitness[mejor]) {
-                mejor = candidato;
-            }
+void seleccionar_padres(int **poblacion, const int *fitness, int **seleccionados, int nCromosomes, int k) {
+    for (int i = 0; i < nCromosomes; i++) {
+        int mejor = rand() % nCromosomes;
+        for (int t = 1; t < k; t++) {
+            int cand = rand() % nCromosomes;
+            if (fitness[cand] < fitness[mejor])
+                mejor = cand;
         }
-
-        memcpy(&seleccionados[i * NUM_GENS],&poblacion[mejor   * NUM_GENS],NUM_GENS * sizeof(int));
+        /* Copiamos la fila mejor al i-ésimo seleccionado */
+        memcpy(seleccionados[i], poblacion[mejor], NUM_GENS * sizeof(int));
     }
 }
-
+ /*Se debe corregir a vector 2D*/
 bool evaluaFormula(int *poblacion, int *fitness, int num_cromosomes){
     bool correcte = true;
     int formula;
@@ -248,7 +242,7 @@ void ejecutar_GA(int *poblacion, int *fitness, int *seleccionados, int *poblacio
     free(mejor_cromosoma);
 }
 
-void libMemTaula(int *taula){
+void libMemTaula(int **taula){
     for (int i = 0; i < sizeof(taula); i++){
         free(taula[i]);
     }
@@ -256,7 +250,7 @@ void libMemTaula(int *taula){
 
 
 
-void libMem(int *poblacio, int *fitness, int *seleccionados, int *poblacion_nueva){
+void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_nueva){
     //libera memoria de la taula y el punter poblacio
     libMemTaula(poblacio);
     free(poblacio);
@@ -286,16 +280,27 @@ int main(){
     float probMutacio;
     int kParam;
     //taules malloc
-    insercioParam(nGeneracions, nCromosomes, probMutacio, kParam);
-    int *poblacion = malloc(nCromosomes * NUM_GENS * sizeof(int));
-    int *fitness = malloc(nCromosomes * NUM_GENS * sizeof(int));
-    int *seleccionados = malloc(nCromosomes * NUM_GENS * sizeof(int));
-    int *poblacion_nueva= malloc(nCromosomes * NUM_GENS * sizeof *poblacion_nueva);
+    int **poblacion = malloc(nCromosomes * sizeof(int*));
+    int *fitness    = malloc(nCromosomes * sizeof *fitness);      /* Este es 1D ja que es un entero por cromosoma */
+    int **seleccionados = malloc(nCromosomes * sizeof(int*));
+    int **poblacion_nueva = malloc(nCromosomes * sizeof(int*));
 
     if (!poblacion || !fitness || !seleccionados || !poblacion_nueva) {
         perror("malloc");
         exit(EXIT_FAILURE);
     }
+
+    for (int i = 0; i < nCromosomes; i++) {
+        poblacion[i]        = malloc(NUM_GENS * sizeof(int));
+        seleccionados[i]    = malloc(NUM_GENS * sizeof(int));
+        poblacion_nueva[i]  = malloc(NUM_GENS * sizeof(int));
+        if (!poblacion[i] || !seleccionados[i] || !poblacion_nueva[i]) {
+            perror("malloc fila");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+
     srand(time(NULL));
     init_poblacion(poblacion, nCromosomes);
     ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParam);
@@ -304,6 +309,5 @@ int main(){
     imprimirContra(seleccionados);
     libMem(poblacion, fitness, seleccionados, poblacion_nueva);
 
-    free(poblacion_nueva);
     return 0;
 }
