@@ -159,6 +159,7 @@ void seleccionar_padres(int **poblacion, const int *fitness, int **seleccionados
         memcpy(seleccionados[i], poblacion[mejor], NUM_GENS * sizeof(int));
     }
 }
+
  /*Se debe corregir a vector 2D*/
 bool evaluaFormula(int *poblacion, int *fitness, int num_cromosomes){
     bool correcte = true;
@@ -172,15 +173,23 @@ bool evaluaFormula(int *poblacion, int *fitness, int num_cromosomes){
     return correcte;
 }
 
-void cruza_one_point(int **taula, int n_cromosomes){
+void onePointCrossover(int **taula, int n_cromosomes){
     int crossoverPoint;
     int aux;
-    for (int i = 0; i < NUM_GENS - 1; i = i + 2){
+    for (int i = 0; i < n_cromosomes - 1; i = i + 2){
         crossoverPoint = rand() % NUM_GENS;
         for (int j = 0; j < crossoverPoint; j++){
             aux = taula[i][j];
             taula[i][j] = taula[i + 1][j];
             taula[i + 1][j] = aux;
+        }
+    }
+}
+
+void faseSupervivencia(int **poblacion_nueva, int **poblacion, int n_cromosomes){
+    for(int i = 0; i < NUM_GENS; i++){
+        for(int j = 0; j < n_cromosomes; j++){
+            poblacion[i][j] = poblacion_nueva[i][j];
         }
     }
 }
@@ -221,7 +230,7 @@ void ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
         seleccionar_padres(poblacion, fitness, seleccionados, n_cromosomas, kParam);
 
         /*Cruce (implementado por Dario) */
-        cruza_one_point(seleccionados, n_cromosomas);
+        onePointCrossover(seleccionados, n_cromosomas);
 
         /*Mutación gen a gen usando tu función mutar */
         for (int i = 0; i < n_cromosomas; i++) {
@@ -230,6 +239,8 @@ void ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
                     mutar(poblacion_nueva[i][j], prob_mut);
             }
         }
+
+        faseSupervivencia(poblacion_nueva, poblacion, n_cromosomas);
 
         /*Reemplazo: swap de punteros */
         int **tmp = poblacion;
@@ -247,26 +258,22 @@ void ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
 
 
 void libMemTaula(int **taula){
-    for (int i = 0; i < sizeof(taula); i++){
+    for (int i = 0; i < NUM_GENS; i++){
         free(taula[i]);
     }
+    free(taula);
 }
-
 
 
 void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_nueva){
     //libera memoria de la taula y el punter poblacio
     libMemTaula(poblacio);
-    free(poblacio);
     //libera memoria de la taula y el punter fitness
     libMemTaula(fitness);
-    free(fitness);
     //libera memoria de la taula y el punter seleccionados
     libMemTaula(seleccionados);
-    free(seleccionados);
     //libera memoria de la taula y el punter poblacion_nueva
     libMemTaula(poblacion_nueva);
-    free(poblacion_nueva);
 }
 
 void imprimirContra(int *taula){
@@ -287,7 +294,7 @@ int main(){
     insercioParam(&nGeneracions, &nCromosomes, &probMutacio, &kParam);
     //taules malloc
     int **poblacion = malloc(nCromosomes * sizeof(int*));
-    int *fitness    = malloc(nCromosomes * sizeof *fitness);      /* Este es 1D ja que es un entero por cromosoma */
+    int *fitness    = malloc(nCromosomes * sizeof *fitness);
     int **seleccionados = malloc(nCromosomes * sizeof(int*));
     int **poblacion_nueva = malloc(nCromosomes * sizeof(int*));
 
@@ -310,7 +317,7 @@ int main(){
     init_poblacion(poblacion, nCromosomes);
     ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParam);
 
-    evaluaFormula(poblacion, fitness, nCromosomes); /*Mira en el void GA lo que necessito para hacer esta funcion, lo mismo para la funcion cruza_one_point()*/
+    evaluaFormula(poblacion, fitness, nCromosomes); 
     imprimirContra(seleccionados);
     libMem(poblacion, fitness, seleccionados, poblacion_nueva);
 
