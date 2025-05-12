@@ -6,7 +6,8 @@
 #include <limits.h>
 
 #define NUM_GENS 30
-#define CROMOSOMES 100
+#define NUM_GENERACIONS 100
+#define CROMOSOMES 40
 #define K 10
 #define PROBABILITAT 0.05
 
@@ -21,13 +22,13 @@ void init_poblacion(int **taula, int num_cromosomes) {
 
 //getters
 
-int getNumGens(int nGens){
+int getNumGenera(int nGenera){
     bool llegit;
-    llegit = scanf("%d", &nGens);
+    llegit = scanf("%d", &nGenera);
     if(llegit == false){
-        nGens = NUM_GENS;
+        nGenera = NUM_GENERACIONS;
     }
-    return nGens;
+    return nGenera;
 }
 
 int getNumCromo(int nCromo){
@@ -171,11 +172,11 @@ bool evaluaFormula(int *poblacion, int *fitness, int num_cromosomes){
     return correcte;
 }
 
-void cruza_one_point(int **taula[][NUM_GENS]){
+void cruza_one_point(int **taula, int n_cromosomes){
     int crossoverPoint;
     int aux;
-    for (int i = 0; i < sizeof(taula) - 1; i = i + 2){
-        crossoverPoint = rand() % sizeof(taula);
+    for (int i = 0; i < NUM_GENS - 1; i = i + 2){
+        crossoverPoint = rand() % NUM_GENS;
         for (int j = 0; j < crossoverPoint; j++){
             aux = taula[i][j];
             taula[i][j] = taula[i + 1][j];
@@ -220,7 +221,7 @@ void ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
         seleccionar_padres(poblacion, fitness, seleccionados, n_cromosomas, kParam);
 
         /*Cruce (implementado por Dario) */
-        cruza_one_point(seleccionados, poblacion_nueva,n_cromosomas);
+        cruza_one_point(seleccionados, n_cromosomas);
 
         /*Mutación gen a gen usando tu función mutar */
         for (int i = 0; i < n_cromosomas; i++) {
