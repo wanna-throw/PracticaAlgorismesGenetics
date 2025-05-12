@@ -184,7 +184,7 @@ void cruza_one_point(int **taula[][NUM_GENS]){
     }
 }
 
-void ejecutar_GA(int *poblacion, int *fitness, int *seleccionados, int *poblacion_nueva, int n_generaciones, int n_cromosomas, float prob_mut,int kParam)
+void ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **poblacion_nueva, int n_generaciones, int n_cromosomas, float prob_mut, int kParam)
 {
     int  mejor_error_global = INT_MAX;
     int  gen_mejor_global   = -1;
@@ -196,11 +196,11 @@ void ejecutar_GA(int *poblacion, int *fitness, int *seleccionados, int *poblacio
 
     for (int gen = 0; gen < n_generaciones; gen++) {
         /*Evaluar fitness */
-    evaluaFormula(poblacion, fitness, n_cromosomas);
+        evaluaFormula(poblacion, fitness, n_cromosomas);
 
         /*Hallar el mejor de la generación actual */
         int mejor_error = INT_MAX;
-        int mejor_index   = 0;
+        int mejor_index = 0;
         for (int i = 0; i < n_cromosomas; i++) {
             if (fitness[i] < mejor_error) {
                 mejor_error = fitness[i];
@@ -212,35 +212,38 @@ void ejecutar_GA(int *poblacion, int *fitness, int *seleccionados, int *poblacio
         if (mejor_error < mejor_error_global) {
             mejor_error_global = mejor_error;
             gen_mejor_global = gen;
-            memcpy(mejor_cromosoma, &poblacion[mejor_index * NUM_GENS], NUM_GENS * sizeof *mejor_cromosoma);
+            /* Copia completa de la fila */
+            memcpy(mejor_cromosoma, poblacion[mejor_index], NUM_GENS * sizeof *mejor_cromosoma);
         }
 
         /*Selección por torneo */
         seleccionar_padres(poblacion, fitness, seleccionados, n_cromosomas, kParam);
 
         /*Cruce (implementado por Dario) */
-        cruza_one_point(seleccionados, poblacion_nueva, n_cromosomas);
+        cruza_one_point(seleccionados, poblacion_nueva,n_cromosomas);
 
         /*Mutación gen a gen usando tu función mutar */
         for (int i = 0; i < n_cromosomas; i++) {
             for (int j = 0; j < NUM_GENS; j++) {
-                poblacion_nueva[i*NUM_GENS + j] =
-                    mutar(poblacion_nueva[i*NUM_GENS + j], prob_mut);
+                poblacion_nueva[i][j] =
+                    mutar(poblacion_nueva[i][j], prob_mut);
             }
         }
 
         /*Reemplazo: swap de punteros */
-        int *tmp = poblacion;
+        int **tmp = poblacion;
         poblacion = poblacion_nueva;
         poblacion_nueva = tmp;
     }
 
     /* 8) Imprimir mejor solución global */
-    printf("\n=== Mejor solución encontrada en generación %d ===\n", gen_mejor_global + 1);
+    printf("\n=== Mejor solución encontrada en generación %d ===\n",
+           gen_mejor_global + 1);
     printf("\n\n");
 
     free(mejor_cromosoma);
 }
+
 
 void libMemTaula(int **taula){
     for (int i = 0; i < sizeof(taula); i++){
@@ -279,6 +282,8 @@ int main(){
     int nCromosomes;
     float probMutacio;
     int kParam;
+
+    insercioParam(&nGeneracions, &nCromosomes, &probMutacio, &kParam);
     //taules malloc
     int **poblacion = malloc(nCromosomes * sizeof(int*));
     int *fitness    = malloc(nCromosomes * sizeof *fitness);      /* Este es 1D ja que es un entero por cromosoma */
@@ -299,7 +304,6 @@ int main(){
             exit(EXIT_FAILURE);
         }
     }
-
 
     srand(time(NULL));
     init_poblacion(poblacion, nCromosomes);
