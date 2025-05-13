@@ -188,7 +188,7 @@ void faseSupervivencia(int **poblacion_nueva, int **poblacion, int n_cromosomes)
     }
 }
 
-void ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **poblacion_nueva, int n_generaciones, int n_cromosomas, float prob_mut, int kParam)
+int *ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **poblacion_nueva, int n_generaciones, int n_cromosomas, float prob_mut, int kParam)
 {
     int  mejor_error_global = INT_MAX;
     int  gen_mejor_global   = -1;
@@ -243,13 +243,21 @@ void ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
         poblacion_nueva = tmp;
     }
 
-    /* 8) Imprimir mejor solución global */
-    printf("\n=== Mejor solución encontrada en generación %d ===\n",
-           gen_mejor_global + 1);
-    printf("\n\n");
+    /*Imprimir generación de la mejor solución */
+    printf("\n=== Mejor solución encontrada en generación %d ===\n\n", gen_mejor_global + 1);
 
-    free(mejor_cromosoma);
+    /*Evaluar e imprimir fitness final */
+    evaluaFormula(poblacion, fitness, n_cromosomas);
+    printf("Fitness de cada cromosoma:\n");
+    for (int i = 0; i < n_cromosomas; i++) {
+        printf("  [%2d] = %d\n", i, fitness[i]);
+    }
+    printf("\n");
+
+    /*Devolver el mejor cromosoma encontrado */
+    return mejor_cromosoma;
 }
+
 
 
 void libMemTaula2D(int **taula){
@@ -316,11 +324,16 @@ int main(){
 
     srand(time(NULL));
     init_poblacion(poblacion, nCromosomes);
-    ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParam);
+    int *mejor = ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParam);
+    for (int j = 0; j < NUM_GENS; j++){
+        printf("%d", mejor[j]);
+        }
 
     evaluaFormula(poblacion, fitness, nCromosomes); 
     imprimirContra(seleccionados);//funcion a revisar
     libMem(poblacion, fitness, seleccionados, poblacion_nueva);
+
+    free(mejor); /*Debes añadir este en libMEM*/
 
     return 0;
 }
