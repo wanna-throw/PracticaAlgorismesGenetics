@@ -29,6 +29,7 @@ int main(){
         poblacion[i]        = malloc(NUM_GENS * sizeof(int));
         seleccionados[i]    = malloc(NUM_GENS * sizeof(int));
         poblacion_nueva[i]  = malloc(NUM_GENS * sizeof(int));
+        
         if (!poblacion[i] || !seleccionados[i] || !poblacion_nueva[i]) {
             perror("malloc fila");
             exit(EXIT_FAILURE);
@@ -38,14 +39,7 @@ int main(){
     srand(time(NULL));
     init_poblacion(poblacion, nCromosomes);
 
-    int *mejor = ejecutar_GA(poblacion,
-                             fitness,
-                             seleccionados,
-                             poblacion_nueva,
-                             nGeneracions,
-                             nCromosomes,
-                             probMutacio,
-                             kParam);
+    int *mejor = ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParam);
 
     for (int j = 0; j < NUM_GENS; j++){
         printf("%d", mejor[j]);
