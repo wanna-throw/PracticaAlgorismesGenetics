@@ -26,7 +26,7 @@ int *ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
 
 void libMemTaula2D(int **taula);
 void libMemTaula1D(int *taula);
-void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_nueva);
+void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_nuevam, int *mejor);
 
 void imprimirContra(int *taula);
 

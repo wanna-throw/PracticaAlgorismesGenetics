@@ -16,13 +16,12 @@ void init_poblacion(int **taula, int num_cromosomes) {
     }
 }
 
-//a revisar
 void evaluaFormula(int **poblacion, int *fitness, int num_cromosomes){
     bool correcte = true;
     for(int i = 0; i < num_cromosomes; i++){
         int suma = 0;
         for (int j = 0; j < NUM_GENS; j++) {
-            suma += poblacion[i][j] * (j*j) - 1977;
+            suma += suma + poblacion[i][j] * (j*j) - 1977;
         }
         fitness[i] = abs(suma);
     }
