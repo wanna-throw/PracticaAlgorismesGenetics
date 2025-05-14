@@ -54,8 +54,7 @@ int main(){
     evaluaFormula(poblacion, fitness, nCromosomes); 
     imprimirContra(mejor);
 
-    libMem(poblacion, fitness, seleccionados, poblacion_nueva);
-    free(mejor);
+    libMem(poblacion, fitness, seleccionados, poblacion_nueva, mejor);
 
     return 0;
 }

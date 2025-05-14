@@ -155,7 +155,7 @@ void libMemTaula1D(int *taula){
     free(taula);
 }
 
-void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_nueva){
+void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_nueva, int *mejor){
     //libera memoria de la taula y el punter poblacio
     libMemTaula2D(poblacio);
     //libera memoria de la taula y el punter fitness
@@ -164,6 +164,8 @@ void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_n
     libMemTaula2D(seleccionados);
     //libera memoria de la taula y el punter poblacion_nueva
     libMemTaula2D(poblacion_nueva);
+    //libera memoria de la taula y el punter mejor
+    libMemTaula1D(mejor);
 }
 
 void imprimirContra(int *taula){
