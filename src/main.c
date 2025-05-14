@@ -4,6 +4,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define NUM_GENS          30
+#define NUM_GENERACIONS   100
+#define CROMOSOMES        40
+#define K                 10
+#define PROBABILITAT      0.05
+
 int main(){
     
     //variables
