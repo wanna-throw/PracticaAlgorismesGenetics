@@ -4,40 +4,40 @@
 #include <time.h>
 #include <stdbool.h>
 
-int getNumGenera(int nGenera){
-    bool llegit;
-    llegit = scanf("%d", &nGenera);
-    if(llegit == false){
+int getNumGenera(){
+    int nGenera;
+    scanf("%d", &nGenera);
+    if(nGenera == '\n'){
         nGenera = NUM_GENERACIONS;
     }
     return nGenera;
 }
 
-int getNumCromo(int nCromo){
-    bool llegit;
-    llegit = scanf("%d", &nCromo);
-    if(llegit == false){
+int getNumCromo(){
+    int nCromo;
+    scanf("%d", &nCromo);
+    if(nCromo == '\n'){
         nCromo = CROMOSOMES;
     }
-    return nCromo;  
+    return nCromo;
 }
 
 /***
  * 
  */
-float getNumProb(float numProb){
-    bool llegit;
-    llegit = scanf("%f", &numProb);
-    if(llegit == false){
+float getNumProb(){
+    float numProb;
+    scanf("%f", &numProb);
+    if(numProb == '\n'){
         numProb = PROBABILITAT;
     }
     return numProb;
 }
 
-int getNumK(int kParam){
-    bool llegit;
-    llegit = scanf("%d", &kParam);
-    if(llegit == false){
+int getNumK(){
+    int kParam;
+    scanf("%d", &kParam);
+    if(kParam == '\n'){
         kParam = K;
     }
     return kParam; 
@@ -49,10 +49,10 @@ int getNumK(int kParam){
  * @return correcte
  */
 bool esCorrecteInt(int param){
-    bool correcte;
-    if(param < 0 || param > 9999){
+    bool correcte = true;
+    if(param < 0 && param > 9999){
         correcte = false;
-        printf("El parametre ha de ser mes gran que 0 o mes petit que 9999");
+        printf("El parametre ha de ser mes gran que 0 i mes petit que 9999");
     }
     return correcte;
 }
@@ -63,10 +63,10 @@ bool esCorrecteInt(int param){
  * @return correcte
  */
 bool esCorrecteFloat(float param){
-    bool correcte;
-    if(param < 0 || param > 1){
+    bool correcte = true;
+    if(param < 0 && param > 1){
         correcte = false;
-        printf("El parametre ha de ser mes gran que 0 o mes petit que 1");
+        printf("El parametre ha de ser mes gran que 0 i mes petit que 1");
     }
     return correcte;
 }
@@ -83,25 +83,25 @@ bool esCorrecteFloat(float param){
 void insercioParam(int *nGene, int *nCromo, float *probMut, int *kParam){
     do{
     printf("\nInserta el nombre de Generacions que vulguis computar: (Default:100)\n");
-    *nGene = getNumGenera(*nGene);
+    *nGene = getNumGenera();
     }while(esCorrecteInt(*nGene) == false);
     printf("\nEl nombre de Generacions es: %d", *nGene);
 
     do{
     printf("\nInserta el nombre de Cromosomes que vulguis computar: (Default:40)\n");
-    *nCromo = getNumCromo(*nCromo);
+    *nCromo = getNumCromo();
     }while(esCorrecteInt(*nCromo) == false);
     printf("\nEl nombre de Cromosomes es: %d", *nCromo);
 
     do{
     printf("\nInserta la probabilitat de mutacio que vulguis computar: (Default:0.05)\n");
-    *probMut = getNumProb(*probMut);
+    *probMut = getNumProb();
     }while(esCorrecteFloat(*probMut) == false);
     printf("\nEl nombre de probabilitat de mutacio es: %f", *probMut);
 
     do{
     printf("\nInserta el nombre del parametre K que vulguis computar: (Default:5)\n");
-    *kParam = getNumK(*kParam);
+    *kParam = getNumK();
     }while(esCorrecteInt(*kParam) == false);
     printf("\nEl nombre de K es: %d", *kParam);
 }

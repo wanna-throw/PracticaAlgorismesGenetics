@@ -10,13 +10,13 @@
 #define PROBABILITAT      0.05
 
 //getters
-int  getNumGenera(int nGenera);
-int  getNumCromo(int nCromo);
+int  getNumGenera();
+int  getNumCromo();
 /***
  * 
  */
-float getNumProb(float numProb);
-int  getNumK(int kParam);
+float getNumProb();
+int  getNumK();
 /***
  * @param param
  * @brief funcio que comprova si el int esta dins dels valors correctes
