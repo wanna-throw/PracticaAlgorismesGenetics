@@ -1,8 +1,8 @@
+#include "ga.h"   
 #include "aux_funcs.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
 
 int getNumGenera(int nGenera){
     bool llegit;
@@ -52,8 +52,8 @@ bool esCorrecteInt(int param){
     bool correcte;
     if(param < 0 || param > 9999){
         correcte = false;
-        printf("El parametre ha de ser mes gran que 0 o mes petit que 9999");
     }
+    printf("El parametre ha de ser mes gran que 0 o mes petit que 9999");
     return correcte;
 }
 
@@ -66,8 +66,8 @@ bool esCorrecteFloat(float param){
     bool correcte;
     if(param < 0 || param > 1){
         correcte = false;
-        printf("El parametre ha de ser mes gran que 0 o mes petit que 1");
     }
+    printf("El parametre ha de ser mes gran que 0 o mes petit que 1");
     return correcte;
 }
 
