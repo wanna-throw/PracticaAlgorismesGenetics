@@ -51,7 +51,7 @@ int main(){
     srand(time(NULL));
     init_poblacion(poblacion, nCromosomes);
 
-    int *mejor = ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParam);
+    int *mejor = ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParametre);
 
     for (int j = 0; j < NUM_GENS; j++){
         printf("%d", mejor[j]);
