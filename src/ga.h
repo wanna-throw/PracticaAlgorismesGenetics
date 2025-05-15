@@ -16,7 +16,6 @@
  */
 void init_poblacion(int **taula, int num_cromosomes);
 
-//a revisar
 void evaluaFormula(int **poblacion, int *fitness, int num_cromosomes);
 
 /**

@@ -21,7 +21,7 @@ int main(){
     //punters
     int *nGene = &nGeneracions;
     int *nCromo = &nCromosomes;
-    int *kParam = &kParam;
+    int *kParam = &kParametre;
     float *probMut = &probMutacio;
 
     insercioParam(nGene, nCromo, probMut, kParam);

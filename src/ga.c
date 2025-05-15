@@ -17,7 +17,6 @@ void init_poblacion(int **taula, int num_cromosomes) {
 }
 
 void evaluaFormula(int **poblacion, int *fitness, int num_cromosomes){
-    bool correcte = true;
     for(int i = 0; i < num_cromosomes; i++){
         int suma = 0;
         for (int j = 0; j < NUM_GENS; j++) {
@@ -168,9 +167,8 @@ void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_n
 }
 
 void imprimirContra(int *taula){
-    printf("La contrasenya es: ");
+    printf("\nLa contrasenya es: ");
     for(int i = 0; i < NUM_GENS; i++){
         printf("%d", taula[i]);
     }
-    printf("\n");
 }
