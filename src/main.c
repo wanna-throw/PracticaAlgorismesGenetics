@@ -16,9 +16,15 @@ int main(){
     int nGeneracions;
     int nCromosomes;
     float probMutacio;
-    int kParam;
+    int kParametre;
 
-    insercioParam(&nGeneracions, &nCromosomes, &probMutacio, &kParam);
+    //punters
+    int *nGene = &nGeneracions;
+    int *nCromo = &nCromosomes;
+    int *kParam = &kParam;
+    float *probMut = &probMutacio;
+
+    insercioParam(nGene, nCromo, probMut, kParam);
 
     // taules malloc
     int **poblacion = malloc(nCromosomes * sizeof(int*));

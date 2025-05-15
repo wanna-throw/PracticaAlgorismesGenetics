@@ -7,7 +7,7 @@
 int getNumGenera(){
     int nGenera;
     scanf("%d", &nGenera);
-    if(nGenera == '\n'){
+    if(nGenera == 0){
         nGenera = NUM_GENERACIONS;
     }
     return nGenera;
@@ -16,7 +16,7 @@ int getNumGenera(){
 int getNumCromo(){
     int nCromo;
     scanf("%d", &nCromo);
-    if(nCromo == '\n'){
+    if(nCromo == 0){
         nCromo = CROMOSOMES;
     }
     return nCromo;
@@ -28,7 +28,7 @@ int getNumCromo(){
 float getNumProb(){
     float numProb;
     scanf("%f", &numProb);
-    if(numProb == '\n'){
+    if(numProb == 0){
         numProb = PROBABILITAT;
     }
     return numProb;
@@ -37,7 +37,7 @@ float getNumProb(){
 int getNumK(){
     int kParam;
     scanf("%d", &kParam);
-    if(kParam == '\n'){
+    if(kParam == 0){
         kParam = K;
     }
     return kParam; 
@@ -84,25 +84,25 @@ bool esCorrecteFloat(float param){
  */
 void insercioParam(int *nGene, int *nCromo, float *probMut, int *kParam){
     do{
-    printf("\nInserta el nombre de Generacions que vulguis computar: (Default:100)\n");
+    printf("\nInserta el nombre de Generacions que vulguis computar: (Introdueix 0 per Default:100)\n");
     *nGene = getNumGenera();
     }while(esCorrecteInt(*nGene) == false);
     printf("\nEl nombre de Generacions es: %d", *nGene);
 
     do{
-    printf("\nInserta el nombre de Cromosomes que vulguis computar: (Default:40)\n");
+    printf("\nInserta el nombre de Cromosomes que vulguis computar: (Introdueix 0 per Default:40)\n");
     *nCromo = getNumCromo();
     }while(esCorrecteInt(*nCromo) == false);
     printf("\nEl nombre de Cromosomes es: %d", *nCromo);
 
     do{
-    printf("\nInserta la probabilitat de mutacio que vulguis computar: (Default:0.05)\n");
+    printf("\nInserta la probabilitat de mutacio que vulguis computar: (Introdueix 0 per Default:0.05)\n");
     *probMut = getNumProb();
     }while(esCorrecteFloat(*probMut) == false);
     printf("\nEl nombre de probabilitat de mutacio es: %f", *probMut);
 
     do{
-    printf("\nInserta el nombre del parametre K que vulguis computar: (Default:5)\n");
+    printf("\nInserta el nombre del parametre K que vulguis computar: (Introdueix 0 per Default:10)\n");
     *kParam = getNumK();
     }while(esCorrecteInt(*kParam) == false);
     printf("\nEl nombre de K es: %d", *kParam);
