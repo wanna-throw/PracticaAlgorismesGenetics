@@ -50,11 +50,10 @@ int getNumK(){
  */
 bool esCorrecteInt(int param){
     bool correcte = true;
-    if(param < 0 && param > 9999){
+    if((param < 0) || (param > 9999)){
         correcte = false;
-        printf("El parametre ha de ser mes gran que 0 i mes petit que 9999");
+        printf("El parametre ha de ser mes gran que 0 i mes petit que 9999\n");
     }
-    printf("El parametre ha de ser mes gran que 0 o mes petit que 9999");
     return correcte;
 }
 
@@ -65,11 +64,10 @@ bool esCorrecteInt(int param){
  */
 bool esCorrecteFloat(float param){
     bool correcte = true;
-    if(param < 0 && param > 1){
+    if(param < 0 || param > 1){
         correcte = false;
         printf("El parametre ha de ser mes gran que 0 i mes petit que 1");
     }
-    printf("El parametre ha de ser mes gran que 0 o mes petit que 1");
     return correcte;
 }
 
@@ -83,12 +81,13 @@ bool esCorrecteFloat(float param){
  *        presionar "enter" s'aplica el valor que hi ha per default.
  */
 void insercioParam(int *nGene, int *nCromo, float *probMut, int *kParam){
+    
     do{
     printf("\nInserta el nombre de Generacions que vulguis computar: (Introdueix 0 per Default:100)\n");
     *nGene = getNumGenera();
     }while(esCorrecteInt(*nGene) == false);
     printf("\nEl nombre de Generacions es: %d", *nGene);
-
+    
     do{
     printf("\nInserta el nombre de Cromosomes que vulguis computar: (Introdueix 0 per Default:40)\n");
     *nCromo = getNumCromo();
