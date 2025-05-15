@@ -40,6 +40,12 @@ bool esCorrecteFloat(float param);
  */
 void insercioParam(int *nGene, int *nCromo, float *probMut, int *kParam);
 
+/**
+ * @param gen
+ * @param probabilidad
+ * @brief Aplica mutación a un gen con probabilidad dada.
+ * @return gen mutado (0→1 o 1→0) o el mismo gen si no muta.
+ */
 int  mutar(int gen, float probabilidad);
 
 #endif /* AUX_FUNCS_H */
