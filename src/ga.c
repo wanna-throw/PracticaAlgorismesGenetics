@@ -68,6 +68,7 @@ void imprimir_estado(int gen,int mejor_error,int mejor_index,int *cromosoma) {
 
 int *ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **poblacion_nueva, int n_generaciones, int n_cromosomes, float prob_mut, int kParam)
 {
+    bool trobat = false;
     int  mejor_error_global = INT_MAX;
     int  gen_mejor_global   = -1;
     int *mejor_cromosoma    = malloc(NUM_GENS * sizeof *mejor_cromosoma);
@@ -76,7 +77,7 @@ int *ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
         exit(EXIT_FAILURE);
     }
 
-    for (int gen = 0; gen < n_generaciones; gen++) {
+    for (int gen = 0; gen < n_generaciones && trobat == false; gen++) {
         /*Evaluar fitness */
         evaluaFormula(poblacion, fitness, n_cromosomes);
 
@@ -92,35 +93,42 @@ int *ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
 
         imprimir_estado(gen, mejor_error, mejor_index, poblacion[mejor_index]);
 
-        /*Actualizar global si corresponde */
-        if (mejor_error < mejor_error_global) {
-            mejor_error_global = mejor_error;
+        //condicio que para el bucle en cas de que la contrasenya hagi sigut trobada
+        if (mejor_error == 0){
+            trobat = true;
             gen_mejor_global = gen;
-            /* Copia completa de la fila */
-            memcpy(mejor_cromosoma, poblacion[mejor_index], NUM_GENS * sizeof *mejor_cromosoma);
         }
+        else{
+            /*Actualizar global si corresponde */
+            if (mejor_error < mejor_error_global) {
+                mejor_error_global = mejor_error;
+                gen_mejor_global = gen;
+                /* Copia completa de la fila */
+                memcpy(mejor_cromosoma, poblacion[mejor_index], NUM_GENS * sizeof *mejor_cromosoma);
+            }
 
-        /*Selección por torneo */
-        seleccionar_padres(poblacion, fitness, seleccionados, n_cromosomes, kParam);
+            /*Selección por torneo */
+            seleccionar_padres(poblacion, fitness, seleccionados, n_cromosomes, kParam);
 
-        /*Cruce (implementado por Dario) */
-        onePointCrossover(seleccionados, n_cromosomes);
+            /*Cruce (implementado por Dario) */
+            onePointCrossover(seleccionados, n_cromosomes);
 
-    /*Mutación gen a gen: mutamos los seleccionados tras el crossover*/
-    for (int i = 0; i < n_cromosomes; i++) {
-        for (int j = 0; j < NUM_GENS; j++) {
-            poblacion_nueva[i][j] =
-            mutar(seleccionados[i][j], prob_mut);
+            /*Mutación gen a gen: mutamos los seleccionados tras el crossover*/
+            for (int i = 0; i < n_cromosomes; i++) {
+                for (int j = 0; j < NUM_GENS; j++) {
+                    poblacion_nueva[i][j] =
+                    mutar(seleccionados[i][j], prob_mut);
+                }
+            }
+
+            /*Supervivencia*/
+            faseSupervivencia(poblacion_nueva, poblacion, n_cromosomes);
+
+            /*Reemplazo: swap de punteros */
+            int **tmp = poblacion;
+            poblacion = poblacion_nueva;
+            poblacion_nueva = tmp;
         }
-    }
-
-        /*Supervivencia*/
-        faseSupervivencia(poblacion_nueva, poblacion, n_cromosomes);
-
-        /*Reemplazo: swap de punteros */
-        int **tmp = poblacion;
-        poblacion = poblacion_nueva;
-        poblacion_nueva = tmp;
     }
 
     /*Imprimir generación de la mejor solución */

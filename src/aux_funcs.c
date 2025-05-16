@@ -104,7 +104,7 @@ void insercioParam(int *nGene, int *nCromo, float *probMut, int *kParam){
     printf("\nInserta el nombre del parametre K que vulguis computar: (Introdueix 0 per Default:5)\n");
     *kParam = getNumK();
     }while(esCorrecteInt(*kParam) == false);
-    printf("\nEl nombre de K es: %d", *kParam);
+    printf("\nEl nombre de K es: %d\n", *kParam);
 }
 
 
