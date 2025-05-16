@@ -48,9 +48,9 @@ int main(){
     init_poblacion(poblacion, nCromosomes);
     evaluaFormula(poblacion, fitness, nCromosomes);
     
-    printf("\nFitness de cromosomes es: ");
-    for(int i = 0; i < CROMOSOMES; i++){
-        printf("%d,", fitness[i]);
+    printf("Fitness de cromosomes es: ");
+    for (int i = 0; i < nCromosomes; i++) {
+        printf("%u%s", fitness[i], (i+1==nCromosomes) ? "\n" : ",");
     }
 
     //Test seleccionar_padres()
@@ -61,9 +61,6 @@ int main(){
     }
     printf("\n\n");
 
-        //Test imprimir_estado()
-    imprimir_estado(0, fitness[0], 0, poblacion[0]);
-    printf("\n");
 
     //test one point crossover
     
