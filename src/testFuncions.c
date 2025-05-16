@@ -48,14 +48,14 @@ int main(){
     init_poblacion(poblacion, nCromosomes);
     evaluaFormula(poblacion, fitness, nCromosomes);
     
-    printf("\nFitness de cromosomes es: ");
+    printf("\nTest fitness\nFitness de cromosomes es: ");
     for (int i = 0; i < nCromosomes; i++) {
         printf("%u%s", fitness[i], (i+1==nCromosomes) ? "\n" : ",");
     }
 
     //Test seleccionar_padres()
     seleccionar_padres(poblacion, fitness, seleccionados, nCromosomes, kParametre);
-    printf("\nPadres seleccionados:");
+    printf("\nTest seleccionar_padres()\nPadres seleccionados:");
     for (int i = 0; i < nCromosomes; i++) {
         printf("\nPadre %2d: ", i+1);
         for (int j = 0; j < NUM_GENS; j++) {
