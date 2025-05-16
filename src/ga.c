@@ -124,7 +124,7 @@ int *ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
     }
 
     /*Imprimir generación de la mejor solución */
-    printf("\n=== Mejor solución encontrada en generación %d ===\n\n", gen_mejor_global + 1);
+    printf("\nMejor solucion encontrada en generacion %d\n\n", gen_mejor_global + 1);
 
     /*Evaluar e imprimir fitness final */
     evaluaFormula(poblacion, fitness, n_cromosomes);

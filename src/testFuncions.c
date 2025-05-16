@@ -48,16 +48,19 @@ int main(){
     init_poblacion(poblacion, nCromosomes);
     evaluaFormula(poblacion, fitness, nCromosomes);
     
-    printf("Fitness de cromosomes es: ");
+    printf("\nFitness de cromosomes es: ");
     for (int i = 0; i < nCromosomes; i++) {
         printf("%u%s", fitness[i], (i+1==nCromosomes) ? "\n" : ",");
     }
 
     //Test seleccionar_padres()
     seleccionar_padres(poblacion, fitness, seleccionados, nCromosomes, kParametre);
-    printf("Padres seleccionados (primer gen de cada uno):");
+    printf("\nPadres seleccionados:");
     for (int i = 0; i < nCromosomes; i++) {
-        printf(" %d", seleccionados[i][0]);
+        printf("\nPadre %2d: ", i+1);
+        for (int j = 0; j < NUM_GENS; j++) {
+            printf("%d", seleccionados[i][j]);
+        }
     }
     printf("\n\n");
 
@@ -66,7 +69,7 @@ int main(){
     
 
 
- //Test ejecutar_GA()
+ //Test ejecutar_GA() {imprimir_estado(), onePointCrossover(), mutarCromosomas(), seleccionar_padres(), evaluaFormula()}
     int *mejor = ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParametre);
     printf("Mejor cromosoma final:\n");
     for (int j = 0; j < NUM_GENS; j++) {
