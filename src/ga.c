@@ -130,7 +130,7 @@ int *ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
     evaluaFormula(poblacion, fitness, n_cromosomes);
     printf("Fitness de cada cromosoma:\n");
     for (int i = 0; i < n_cromosomes; i++) {
-        printf("  [%2d] = %d\n", i, fitness[i]);
+        printf("[%d] = %d\n", i, fitness[i]);
     }
     printf("\n");
 
