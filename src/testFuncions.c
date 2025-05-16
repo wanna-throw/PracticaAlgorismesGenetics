@@ -62,7 +62,6 @@ int main(){
     printf("\n\n");
 
         //Test imprimir_estado()
-    printf("Estado generación 0:\n");
     imprimir_estado(0, fitness[0], 0, poblacion[0]);
     printf("\n");
 

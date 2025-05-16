@@ -59,10 +59,7 @@ void faseSupervivencia(int **poblacion_nueva, int **poblacion, int n_cromosomes)
 }
 
 void imprimir_estado(int gen,int mejor_error,int mejor_index,int *cromosoma) {
-    printf("Generación %3d | Mejor error: %5d | Índice: %3d | Genes: ",
-           gen + 1,             // para que empiece en 1
-           mejor_error,
-           mejor_index);
+    printf("Generacion %d | Mejor error: %d | Indice: %d | Genes: ", gen + 1, mejor_error, mejor_index);
     for (int j = 0; j < NUM_GENS; j++) {
         printf("%d", cromosoma[j]);
     }
@@ -109,13 +106,13 @@ int *ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **pobla
         /*Cruce (implementado por Dario) */
         onePointCrossover(seleccionados, n_cromosomes);
 
-        /*Mutación gen a gen usando tu función mutar */
-        for (int i = 0; i < n_cromosomes; i++) {
-            for (int j = 0; j < NUM_GENS; j++) {
-                poblacion_nueva[i][j] =
-                    mutar(poblacion_nueva[i][j], prob_mut);
-            }
+    /*Mutación gen a gen: mutamos los seleccionados tras el crossover*/
+    for (int i = 0; i < n_cromosomes; i++) {
+        for (int j = 0; j < NUM_GENS; j++) {
+            poblacion_nueva[i][j] =
+            mutar(seleccionados[i][j], prob_mut);
         }
+    }
 
         /*Supervivencia*/
         faseSupervivencia(poblacion_nueva, poblacion, n_cromosomes);
