@@ -20,9 +20,9 @@ void evaluaFormula(int **poblacion, int *fitness, int num_cromosomes){
     for(int i = 0; i < num_cromosomes; i++){
         int suma = 0;
         for (int j = 0; j < NUM_GENS; j++) {
-            suma += suma + poblacion[i][j] * (j*j) - 1977;
+            suma += poblacion[i][j] * ((j+1)*(j+1));
         }
-        fitness[i] = abs(suma);
+        fitness[i] = abs(suma-1977);
     }
 }
 
