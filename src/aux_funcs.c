@@ -22,9 +22,6 @@ int getNumCromo(){
     return nCromo;
 }
 
-/***
- * 
- */
 float getNumProb(){
     float numProb;
     scanf("%f", &numProb);
@@ -43,11 +40,7 @@ int getNumK(){
     return kParam; 
 }
 
-/***
- * @param param
- * @brief funcio que comprova si el int esta dins dels valors correctes
- * @return correcte
- */
+
 bool esCorrecteInt(int param){
     bool correcte = true;
     if((param < 0) || (param > 9999)){
@@ -57,11 +50,7 @@ bool esCorrecteInt(int param){
     return correcte;
 }
 
-/***
- * @param param
- * @brief funcio que comprova si el float esta dins dels valors correctes
- * @return correcte
- */
+
 bool esCorrecteFloat(float param){
     bool correcte = true;
     if(param < 0 || param > 1){
@@ -71,15 +60,7 @@ bool esCorrecteFloat(float param){
     return correcte;
 }
 
-/***
- * @param nGene
- * @param nCromo
- * @param probMut
- * @param kParam
- * @brief Es una funcio que crida altres funcions inicialitza els parametres amb valors introduits 
- *        per l'usuari. En cas d'una insercio invalida li torna a demanar el valor i en cas de 
- *        presionar "enter" s'aplica el valor que hi ha per default.
- */
+
 void insercioParam(int *nGene, int *nCromo, float *probMut, int *kParam){
     
     do{

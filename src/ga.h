@@ -16,6 +16,12 @@
  */
 void init_poblacion(int **taula, int num_cromosomes);
 
+/***
+ * @param poblacion
+ * @param fitness
+ * @param num_cromosomes
+ * @brief Assigna el fitness que te cada cromosoma en referencia a la formula de la contrasenya
+ */
 void evaluaFormula(int **poblacion, int *fitness, int num_cromosomes);
 
 /**
@@ -29,10 +35,28 @@ void evaluaFormula(int **poblacion, int *fitness, int num_cromosomes);
  */
 void seleccionar_padres(int **poblacion, const int *fitness, int **seleccionados, int nCromosomes, int k);
 
+/***
+ * @param taula
+ * @param n_cromosomes
+ * @brief Funcion que intercambia los valores de 2 en 2 filas hasta una posicion random
+ */
 void onePointCrossover(int **taula, int n_cromosomes);
 
+/***
+ * @param poblacion_nueva
+ * @param poblacion
+ * @param n_cromosomes
+ * @brief funcio que aplica el relleu generacional (copia els cromosomes de la taula de poblacion en la taula de poblacion_nueva)
+ */
 void faseSupervivencia(int **poblacion_nueva, int **poblacion, int n_cromosomes);
 
+/***
+ * @param gen
+ * @param mejor_error
+ * @param mejor_index
+ * @param cromosoma
+ * @brief funcio que imprimeix els parametres de cada generacio
+ */
 void imprimir_estado(int gen, int mejor_error, int mejor_index, int *cromosoma);
 
 /**
@@ -50,10 +74,32 @@ void imprimir_estado(int gen, int mejor_error, int mejor_index, int *cromosoma);
  */
 int *ejecutar_GA(int **poblacion, int *fitness, int **seleccionados, int **poblacion_nueva, int n_generaciones, int n_cromosomes, float prob_mut, int kParam);
 
+/**
+ * @param taula
+ * @brief libera la memoria de les taules de 2 dimensions
+ */
 void libMemTaula2D(int **taula);
-void libMemTaula1D(int *taula);
-void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_nuevam, int *mejor);
 
+/**
+ * @param taula
+ * @brief libera la memoria de les taules de 1 dimensio
+ */
+void libMemTaula1D(int *taula);
+
+/**
+ * @param poblacio
+ * @param fitness
+ * @param seleccionados
+ * @param poblacion_nueva
+ * @param mejor
+ * @brief wrapper que crida les funcions libMemTaula1D() i libMemTaula2D() per les taules introduides
+ */
+void libMem(int **poblacio, int *fitness, int **seleccionados, int **poblacion_nueva, int *mejor);
+
+/***
+ * @param taula
+ * @brief funcio que imprimeix per pantalla els valors de la taula introduida
+ */
 void imprimirContra(int *taula);
 
 #endif /* GA_H */ 
