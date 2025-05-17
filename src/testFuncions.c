@@ -64,11 +64,6 @@ int main(){
     }
     printf("\n\n");
 
-
-    //test one point crossover
-    
-
-
  //Test ejecutar_GA() {imprimir_estado(), onePointCrossover(), mutarCromosomas(), seleccionar_padres(), evaluaFormula()}
     int *mejor = ejecutar_GA(poblacion, fitness, seleccionados, poblacion_nueva, nGeneracions, nCromosomes, probMutacio, kParametre);
     printf("Mejor cromosoma final:\n");
